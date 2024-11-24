@@ -26,10 +26,15 @@ function createCard(data) {
   const cardElement = template.cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
+  const likeButton = cardElement.querySelector('.card__like-button');
 
   cardImage.src = data.link;
   cardImage.alt = data.name;
   cardTitle.textContent = data.name;
+  
+  likeButton.addEventListener('click', () => {
+    likeButton.classList.toggle('card__like-button_is-active');
+  });
 
   return cardElement;
 }

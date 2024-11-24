@@ -35,7 +35,9 @@ function createCard(data) {
   likeButton.addEventListener('click', () => {
     likeButton.classList.toggle('card__like-button_is-active');
   });
-
+    
+  deleteCard(cardElement);
+  
   return cardElement;
 }
 
@@ -56,7 +58,14 @@ function fillProfileForm() {
 }
 
 // @todo: Функция удаления карточки
-
+function deleteCard(cardElement) {
+  const deleteButton = cardElement.querySelector('.card__delete-button');
+  deleteButton.addEventListener('click', (event) => {
+    event.target.closest('.places__item')?.remove();
+  });
+}
+  
+  
 // @todo: Вывести карточки на страницу
 function renderCards() {
   initialCards.forEach((cardData) => {

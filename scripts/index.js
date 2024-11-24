@@ -8,6 +8,9 @@ const cardPopup = document.querySelector('.popup_type_new-card');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const cardAddButton = document.querySelector('.profile__add-button');
 const closeButtons = document.querySelectorAll('.popup__close');
+const imagePopup = document.querySelector('.popup_type_image');
+const popupImage = imagePopup.querySelector('.popup__image');
+const popupCaption = imagePopup.querySelector('.popup__caption');
 
 // @todo: Профиль
 const profileTitle = document.querySelector('.profile__title');
@@ -38,17 +41,26 @@ function createCard(data) {
     
   deleteCard(cardElement);
   
+  cardImage.addEventListener('click', () => {
+    popupImage.src = data.link;
+    popupImage.alt = data.name;
+    popupCaption.textContent = data.name;
+    openModal(imagePopup);
+  });
+  
   return cardElement;
 }
 
 // @todo: Функция открытия поп-апа
 function openModal(popup) {
   popup.classList.add('popup_is-opened');
+  document.addEventListener('keydown', closeOnEsc);
 }
 
 // @todo: Функция закрытия поп-апа
 function closeModal(popup) {
   popup.classList.remove('popup_is-opened');
+  document.addEventListener('keydown', closeOnEsc);
 }
 
 // @todo: Функция заполнения полей редактирования профиля
@@ -118,3 +130,13 @@ closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => closeModal(popup));
 });
+
+// @todo: Escape
+function closeOnEsc(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_is-opened');
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
+}

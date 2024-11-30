@@ -1,3 +1,5 @@
+import { enableValidation, resetValidation } from './validate.js';
+
 // @todo: Темплейт карточки
 const template = document.querySelector('#card-template').content;
 
@@ -54,13 +56,13 @@ function createCard(data) {
 // @todo: Функция открытия поп-апа
 function openModal(popup) {
   popup.classList.add('popup_is-opened');
-  document.addEventListener('keydown', closeOnEsc);
+  document.addEventListener('keydown', closeByEsc);
 }
 
 // @todo: Функция закрытия поп-апа
 function closeModal(popup) {
   popup.classList.remove('popup_is-opened');
-  document.addEventListener('keydown', closeOnEsc);
+  document.addEventListener('keydown', closeByEsc);
 }
 
 // @todo: Функция заполнения полей редактирования профиля
@@ -91,6 +93,7 @@ renderCards();
 // @todo: Обработчики для поп-апа редактирования профиля
 profileEditButton.addEventListener('click', () => {
   fillProfileForm();
+  resetValidation(profileFormElement);
   openModal(profilePopup);
 });
 
@@ -108,6 +111,7 @@ profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 // @todo: Обработчики для поп-апа добавления карточки
 cardAddButton.addEventListener('click', () => {
   cardFormElement.reset();
+  resetValidation(cardFormElement);
   openModal(cardPopup);
 });
 
@@ -132,7 +136,7 @@ closeButtons.forEach((button) => {
 });
 
 // @todo: Escape
-function closeOnEsc(evt) {
+function closeByEsc(evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_is-opened');
     if (openedPopup) {
@@ -140,3 +144,7 @@ function closeOnEsc(evt) {
     }
   }
 }
+
+enableValidation({
+  formSelector: '.popup__form',
+});

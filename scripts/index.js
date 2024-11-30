@@ -145,6 +145,24 @@ function closeByEsc(evt) {
   }
 }
 
+// @todo: Закрытие поп-апов оверлей
+closeButtons.forEach((button) => {
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => closeModal(popup));
+});
+
+// @todo: Обработчик закрытия поп-апа кликом на оверлей
+document.querySelectorAll('.popup').forEach((popup) => {
+  popup.addEventListener('mousedown', closeOnOverlayClick);
+});
+
+// @todo: Функция закрытия поп-апа кликом на оверлей
+function closeOnOverlayClick(evt) {
+  if (evt.target.classList.contains('popup')) {
+    closeModal(evt.target);
+  }
+}
+
 enableValidation({
   formSelector: '.popup__form',
 });

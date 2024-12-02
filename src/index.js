@@ -1,7 +1,10 @@
-import { enableValidation, resetValidation } from './validate.js';
-
+import { enableValidation, resetValidation } from './scripts/validate.js';
+import { openModal, closeModal, closeOnOverlayClick } from './scripts/modal.js';
+import { createCard } from './scripts/card.js';
+import { initialCards } from './scripts/cards.js';
+import "./pages/index.css";
 // @todo: Темплейт карточки
-const template = document.querySelector('#card-template').content;
+
 
 // @todo: DOM узлы
 const cardList = document.querySelector('.places__list');
@@ -26,64 +29,16 @@ const cardFormElement = document.forms['new-place'];
 const placeInput = cardFormElement.elements['place-name'];
 const linkInput = cardFormElement.elements.link;
 
-// @todo: Функция создания карточки
-function createCard(data) {
-  const cardElement = template.cloneNode(true);
-  const cardImage = cardElement.querySelector('.card__image');
-  const cardTitle = cardElement.querySelector('.card__title');
-  const likeButton = cardElement.querySelector('.card__like-button');
-
-  cardImage.src = data.link;
-  cardImage.alt = data.name;
-  cardTitle.textContent = data.name;
-  
-  likeButton.addEventListener('click', () => {
-    likeButton.classList.toggle('card__like-button_is-active');
-  });
-    
-  deleteCard(cardElement);
-  
-  cardImage.addEventListener('click', () => {
-    popupImage.src = data.link;
-    popupImage.alt = data.name;
-    popupCaption.textContent = data.name;
-    openModal(imagePopup);
-  });
-  
-  return cardElement;
-}
-
-// @todo: Функция открытия поп-апа
-function openModal(popup) {
-  popup.classList.add('popup_is-opened');
-  document.addEventListener('keydown', closeByEsc);
-}
-
-// @todo: Функция закрытия поп-апа
-function closeModal(popup) {
-  popup.classList.remove('popup_is-opened');
-  document.addEventListener('keydown', closeByEsc);
-}
-
 // @todo: Функция заполнения полей редактирования профиля
 function fillProfileForm() {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
 }
 
-// @todo: Функция удаления карточки
-function deleteCard(cardElement) {
-  const deleteButton = cardElement.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', (event) => {
-    event.target.closest('.places__item')?.remove();
-  });
-}
-  
-  
 // @todo: Вывести карточки на страницу
 function renderCards() {
   initialCards.forEach((cardData) => {
-    const card = createCard(cardData);
+    const card = createCard(cardData, popupImage, popupCaption, imagePopup);
     cardList.append(card);
   });
 }
@@ -121,7 +76,11 @@ function handleCardFormSubmit(evt) {
   const newCard = createCard({
     name: placeInput.value,
     link: linkInput.value,
-  });
+  },
+    popupImage,
+    popupCaption,
+    imagePopup
+  );
   cardList.prepend(newCard);
   closeModal(cardPopup);
 }
@@ -135,16 +94,6 @@ closeButtons.forEach((button) => {
   button.addEventListener('click', () => closeModal(popup));
 });
 
-// @todo: Escape
-function closeByEsc(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    if (openedPopup) {
-      closeModal(openedPopup);
-    }
-  }
-}
-
 // @todo: Закрытие поп-апов оверлей
 closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
@@ -155,13 +104,6 @@ closeButtons.forEach((button) => {
 document.querySelectorAll('.popup').forEach((popup) => {
   popup.addEventListener('mousedown', closeOnOverlayClick);
 });
-
-// @todo: Функция закрытия поп-апа кликом на оверлей
-function closeOnOverlayClick(evt) {
-  if (evt.target.classList.contains('popup')) {
-    closeModal(evt.target);
-  }
-}
 
 enableValidation({
   formSelector: '.popup__form',

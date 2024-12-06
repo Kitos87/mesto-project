@@ -1,6 +1,6 @@
-import { enableValidation, resetValidation } from "./scripts/validate.js";
-import { openModal, closeModal, closeOnOverlayClick } from "./scripts/modal.js";
-import { createCard } from "./scripts/card.js";
+import { enableValidation, resetValidation } from "./validate.js";
+import { openModal, closeModal, closeOnOverlayClick } from "./modal.js";
+import { createCard } from "./card.js";
 import {
   getUserInfo,
   getInitialCards,
@@ -8,8 +8,8 @@ import {
   updateAvatar,
   updateUserInfo,
   deleteCard,
-} from "./scripts/api.js";
-import "./pages/index.css";
+} from "./api.js";
+import "../pages/index.css";
 
 // DOM узлы
 const cardList = document.querySelector(".places__list");

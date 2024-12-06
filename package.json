@@ -2,7 +2,7 @@
   "name": "mesto-project",
   "version": "1.0.0",
   "description": "студент, когорта, стэк",
-  "main": "index.js",
+  "main": "src/components/index.js",
   "scripts": {
     "build": "webpack --mode production",
     "deploy": "gh-pages -d dist",
